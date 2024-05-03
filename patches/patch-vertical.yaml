@@ -1,0 +1,24 @@
+spec:
+  template:
+    spec:
+      containers:
+      - name: echoserver
+        resources:
+          limits:
+            memory: 5G
+            cpu: 1000m
+          requests:
+            memory: 5G
+            cpu: 1000m
+      # This ensures that pods do not run on the same machine.
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                - echoserver
+                - ingress-nginx
+            topologyKey: kubernetes.io/hostname
