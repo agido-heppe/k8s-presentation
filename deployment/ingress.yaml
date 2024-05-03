@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: echoserver
-  namespace: actions-runner-system
+  namespace: echo-server
   annotations:
     nginx.ingress.kubernetes.io/whitelist-source-range: 52.19.237.122/32,195.202.50.85/32,54.194.100.49
 spec:
@@ -17,4 +17,4 @@ spec:
           service:
             name: echoserver
             port:
-              number: 80
+              number: 3000

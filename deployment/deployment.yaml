@@ -2,16 +2,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: echoserver
-  namespace: actions-runner-system
+  namespace: echo-server
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: echoserver
+      app.kubernetes.io/name: echoserver
   template:
     metadata:
       labels:
-        app: echoserver
+        app.kubernetes.io/name: echoserver
     spec:
       containers:
       - image: ealen/echo-server:latest
