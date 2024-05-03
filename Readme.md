@@ -26,7 +26,7 @@ cat Dockerfile
 # Build an image for the Dockerfile
 docker build -t echo-server . -f Dockerfile
 # Start the container
-  docker run -it --name echo-server -v /tmp/:/mnt/host_tmp/ --rm -d -p 3000:80 echo-server
+docker run -it --name echo-server -v /tmp/:/mnt/host_tmp/ --rm -d -p 3000:80 echo-server
 # Test the container
 curl localhost:3000 | jq
 ```
@@ -45,6 +45,8 @@ kubectl --namespace echo-server apply -f ./deployment/
 
 ```
 watch -n1 kubectl -n echo-server get pods -o wide
+
+~/go/bin/eks-node-viewer --resources=cpu,memory
 ```
 
 ### Scaling example the number of pods
@@ -59,6 +61,11 @@ kubectl patch deployment echoserver --patch-file patches/patch-horizontal.yaml
 kubectl patch deployment echoserver --patch-file patches/patch-vertical.yaml
 ```
 
+### Testing the deployment
+```bash
+while True; do curl -s https://echo-server.test.reactivebetting.com/  | jq .host.ip ; done
+```
+
 ### Cleanup
 ```bash
 kubectl --namespace echo-server delete -f ./deployment/
@@ -66,30 +73,8 @@ kubectl delete namespace echo-server
 ```
 
 
+## Further demos
 
-```bash
-while True; do curl -s https://echo-server.test.reactivebetting.com/  | jq .host.ip ; done
-```
-
-
-### Scaling the resource requests to scale nodes
-
-Adjust resources and reapply
-```
-        resources:
-          limits:
-            memory: 6G
-            cpu: 250m
-          requests:
-            memory: 6G
-            cpu: 250m
-```
-
-Show pods
-```
-~/go/bin/eks-node-viewer --resources=cpu,memory
-```
-
-## ArgoCD Demo
+### ArgoCD Demo
 
 https://github.com/agido-heppe/argocd-demo
